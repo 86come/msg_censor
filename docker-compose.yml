@@ -1,0 +1,41 @@
+version: "3.9"
+services:
+  db:
+    image: mysql:8.0
+    container_name: msg-censor-mysql
+    command: [
+      "--default-authentication-plugin=mysql_native_password",
+      "--character-set-server=utf8mb4",
+      "--collation-server=utf8mb4_unicode_ci"
+    ]
+    environment:
+      MYSQL_DATABASE: msg_censor
+      MYSQL_ROOT_PASSWORD: dir99
+      MYSQL_ROOT_HOST: "%"
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-pdir99"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  app:
+    build: .
+    container_name: msg-censor-app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/msg_censor?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: dir99
+      SERVER_PORT: 8080
+    ports:
+      - "8080:8080"
+
+volumes:
+  db_data:
+
