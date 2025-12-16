@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS censor_check_log (
+  id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT '主键',
+  has_keyword TINYINT(1) NOT NULL COMMENT '是否命中敏感词',
+  original_text TEXT NOT NULL COMMENT '原文明文',
+  masked_text TEXT NOT NULL COMMENT '脱敏后文本（*替换）',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='敏感词校验日志-明文';
+

@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: msg-censor
+  datasource:
+    url: jdbc:mysql://localhost:3306/msg_censor?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC&useSSL=false
+    username: root
+    password: dir99
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      mode: always
+
+server:
+  port: 8080
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
